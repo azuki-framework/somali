@@ -3,7 +3,6 @@ package org.azkwf.somali;
 import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -23,27 +22,35 @@ public class SomaliFrame extends JFrame {
 	private JMenuBar menuBar;
 	private JMenu menuFile;
 	private JMenuItem menuFileExit;
-	
+
 	private LogPanel pnlLog;
 
 	public SomaliFrame() {
 		setLayout(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
+
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
+
+		menuFile = new JMenu("File");
+		menuBar.add(menuFile);
+
+		menuFileExit = new JMenuItem("Exit");
+		menuFile.add(menuFileExit);
+
 		pnlLog = new LogPanel();
 		pnlLog.setLocation(0, 0);
 		add(pnlLog);
-		
+
 		addComponentListener(new ComponentAdapter() {
 			public void componentShown(ComponentEvent e) {
 				doResize();
 			}
+
 			public void componentResized(ComponentEvent e) {
 				doResize();
 			}
+
 			private void doResize() {
 				Insets insets = getInsets();
 				int width = getWidth() - (insets.left + insets.right);
@@ -51,8 +58,8 @@ public class SomaliFrame extends JFrame {
 				pnlLog.setSize(width, height - menuBar.getHeight());
 			}
 		});
-	
+
 		setBounds(10, 10, 600, 400);
 	}
-	
+
 }
