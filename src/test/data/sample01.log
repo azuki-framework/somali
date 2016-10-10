@@ -1,0 +1,11 @@
+00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser - デバッグログ
+00:01:00.000 [INFO ] org.azkwf.somali.parser.LogParser - 情報ログ
+00:02:00.000 [ERROR] org.azkwf.somali.parser.LogParser - エラーログ
+00:03:00.000 [WARN ] org.azkwf.somali.parser.LogParser - 警告ログ
+00:04:00.000 [TRACE] org.azkwf.somali.parser.LogParser - トレースログ
+00:05:00.000 [DEBUG] org.azkwf.somali.parser.LogParser - １行ログ
+00:06:00.000 [DEBUG] org.azkwf.somali.parser.LogParser - 複数改行ログ
+２行目
+３行目
+00:07:00.000 [DEBUG] org.azkwf.somali.parser.LogParser - AAAA
+00:08:00.000 [DEBUG] org.azkwf.somali.parser.LogParser - あああ

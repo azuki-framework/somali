@@ -15,43 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.azkwf.somali.record;
+package org.azkwf.somali.parser;
 
-import java.util.Date;
+import org.azkwf.somali.record.LogRecord;
 
 /**
- * このインターフェースは、ログレコード情報を定義したインターフェースです。
+ * このインターフェースは、ログパーサのイベントを定義するリスナーインターフェースです。
  * 
  * @author Kawakicchi
  */
-public interface LogRecord {
+public interface LogParserListener {
 
-	/**
-	 * 日付を取得する。
-	 * 
-	 * @return 日付
-	 */
-	public Date getDate();
+	void logParserStarted(final LogParserEvent e);
 
-	/**
-	 * ログレベルを取得する。
-	 * 
-	 * @return ログレベル
-	 */
-	public String getLevel();
+	void logParserFinished(final LogParserEvent e);
 
-	/**
-	 * ロガーを取得する。
-	 * 
-	 * @return ロガー
-	 */
-	public String getLogger();
-
-	/**
-	 * メッセージを取得する。
-	 * 
-	 * @return メッセージ
-	 */
-	public String getMessage();
-
+	void logParserLogRecord(final LogRecord record, final LogParserEvent e);
 }
