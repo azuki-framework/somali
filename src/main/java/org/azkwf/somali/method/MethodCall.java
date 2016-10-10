@@ -20,6 +20,8 @@ package org.azkwf.somali.method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.azkwf.somali.util.SomaliUtil;
+
 /**
  * このクラスは、メソッド呼び出し情報を保持したクラスです。
  * 
@@ -32,6 +34,7 @@ public class MethodCall {
 	private final List<MethodCall> methodCalls;
 	private String result;
 	private String exception;
+	private Long time;
 
 	public MethodCall() {
 		arguments = new ArrayList<String>();
@@ -96,7 +99,22 @@ public class MethodCall {
 		this.exception = exception;
 	}
 
-	public String toString() {
-		return String.format("%s (%dms)", name, 12);
+	/**
+	 * @return the time
+	 */
+	public Long getTime() {
+		return time;
 	}
+
+	/**
+	 * @param time the time to set
+	 */
+	public void setTime(Long time) {
+		this.time = time;
+	}
+
+	public String toString() {
+		return String.format("%s (%s)", name, SomaliUtil.msToString(time));
+	}
+
 }

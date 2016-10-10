@@ -34,7 +34,7 @@ public class ParserConfig {
 	private int patternIndexMessage;
 
 	public ParserConfig() {
-		String date = "([0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}){1}";
+		String date = "([0-9]{4}\\/[0-9]{2}\\/[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}){1}";
 		String level = "\\[([^\\]\\s]+)[\\s]*\\]";
 		String logger = "([^\\s]+){1}";
 		String message = "(.*){1}";
@@ -46,7 +46,7 @@ public class ParserConfig {
 		patternIndexLevel = 2;
 		patternIndexLogger = 3;
 		patternIndexMessage = 4;
-		formatDate = "HH:mm:ss.SSS";
+		formatDate = "yyy/MM/dd HH:mm:ss.SSS";
 	}
 
 	public Pattern getPattern() {

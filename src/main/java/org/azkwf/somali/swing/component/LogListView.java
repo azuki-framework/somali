@@ -124,6 +124,10 @@ public class LogListView extends JPanel {
 		listeners.add(listener);
 	}
 
+	public int getSelectIndex() {
+		return table.getSelectedRow();
+	}
+
 	public void clear() {
 		logs.clear();
 

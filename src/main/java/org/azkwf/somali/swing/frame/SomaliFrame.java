@@ -28,8 +28,10 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -70,6 +72,7 @@ public class SomaliFrame extends JFrame {
 
 	// 
 	private StatusBar statusbar;
+	private JLabel lblStatusMessage;
 	private JProgressBar progressbar;
 
 	//
@@ -122,8 +125,12 @@ public class SomaliFrame extends JFrame {
 		add(BorderLayout.SOUTH, statusbar);
 		statusbar.setLayout(new BorderLayout());
 
+		lblStatusMessage = new JLabel();
+		statusbar.add(BorderLayout.CENTER, lblStatusMessage);
 		progressbar = new JProgressBar();
 		progressbar.setPreferredSize(new Dimension(160, 0));
+		progressbar.setStringPainted(true);
+		progressbar.setString("");
 		statusbar.add(BorderLayout.EAST, progressbar);
 
 		init();
@@ -145,10 +152,17 @@ public class SomaliFrame extends JFrame {
 		dlg.setVisible(true);
 	}
 
+	private static final Pattern PTN_METHOD_START = Pattern.compile("^>>> (.*)$", Pattern.MULTILINE | Pattern.DOTALL);
+
 	private void openMethodTree() {
-		MethodLogDialog dlg = new MethodLogDialog(this);
-		dlg.refrash(logs);
-		dlg.setVisible(true);
+		int index = table.getSelectIndex();
+		LogRecord log = logs.get(index);
+
+		if (PTN_METHOD_START.matcher(log.getMessage()).find()) {
+			MethodLogDialog dlg = new MethodLogDialog(this);
+			dlg.refrash(logs, index);
+			dlg.setVisible(true);
+		}
 	}
 
 	private void parse(final LogReadConfig config) {
@@ -159,26 +173,74 @@ public class SomaliFrame extends JFrame {
 
 		LogParser parser = new SimpleLogParser(file);
 		parser.addLogParserListener(new LogParserListener() {
+			long start = 0;
+			long cntTotal = 0;
+			long cntHit = 0;
+
 			@Override
 			public void logParserLogRecord(final LogRecord record, LogParserEvent e) {
+				cntTotal++;
+				if (null != config.getDateFrom()) {
+					if (record.getDate().getTime() < config.getDateFrom().getTime()) {
+						return;
+					}
+				}
+				if (null != config.getDateTo()) {
+					if (record.getDate().getTime() > config.getDateTo().getTime()) {
+						return;
+					}
+				}
+				if (0 < config.getLevel().length()) {
+					if (!record.getLevel().equals(config.getLevel())) {
+						return;
+					}
+				}
+				if (0 < config.getLogger().length()) {
+					if (-1 == record.getLogger().indexOf(config.getLogger())) {
+						return;
+					}
+				}
+				if (0 < config.getMessage().length()) {
+					if (-1 == record.getMessage().indexOf(config.getMessage())) {
+						return;
+					}
+				}
+
+				cntHit++;
 				logs.add(record);
 			}
 
 			@Override
 			public void logParserStarted(final LogParserEvent e) {
+				start = System.nanoTime();
+				setProgressStart("読込み中");
+				lblStatusMessage.setText("");
 			}
 
 			@Override
 			public void logParserFinished(final LogParserEvent e) {
-
 				for (LogRecord log : logs) {
 					table.addLog(log);
 				}
+				setProgressStop("");
+				long end = System.nanoTime();
+				String msg = String.format("%d/%d (%.3fsec)", cntHit, cntTotal, ((double) (end - start)) / 1000000000f);
+				lblStatusMessage.setText(msg);
 			}
 		});
 
 		Task task = new LogParseTask(parser);
 		TaskManager.getInstance().queue(task);
+	}
+
+	private void setProgressStart(final String message) {
+		progressbar.setString(message);
+		progressbar.setIndeterminate(true);
+	}
+
+	private void setProgressStop(final String message) {
+		progressbar.setString(message);
+		progressbar.setIndeterminate(false);
 	}
 
 	private void close() {

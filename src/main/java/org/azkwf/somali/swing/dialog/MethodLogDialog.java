@@ -21,6 +21,7 @@ import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,13 +70,21 @@ public class MethodLogDialog extends JDialog {
 	private static final Pattern PTN_THROW = Pattern.compile("^  throw (.*)$", Pattern.MULTILINE | Pattern.DOTALL);
 
 	public void refrash(final List<LogRecord> logs) {
-		tree.setMethodCall(create(logs));
+		refrash(logs, 0);
+	}
+
+	public void refrash(final List<LogRecord> logs, final int index) {
+		tree.setMethodCall(create(logs, index));
 		tree.expandAll();
 	}
 
 	private MethodCall create(final List<LogRecord> logs) {
+		return create(logs, 0);
+	}
+
+	private MethodCall create(final List<LogRecord> logs, int index) {
 		MethodCall method = new MethodCall();
-		create(method, logs, 0);
+		create(method, logs, index);
 
 		return method;
 	}
@@ -89,6 +98,7 @@ public class MethodLogDialog extends JDialog {
 		if (!m.find()) {
 			return indexBuf;
 		}
+		Date start = logs.get(indexBuf).getDate();
 		MethodCall method = new MethodCall(m.group(1));
 		parent.addMethodCall(method);
 
@@ -114,6 +124,8 @@ public class MethodLogDialog extends JDialog {
 				// <<< method
 				m = PTN_METHOD_END.matcher(logs.get(indexBuf).getMessage());
 				if (m.find()) {
+					Date end = logs.get(indexBuf).getDate();
+					method.setTime(end.getTime() - start.getTime());
 					indexBuf++;
 					break;
 				} else {
