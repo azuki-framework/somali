@@ -23,8 +23,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.azkwf.somali.config.ParserConfig;
-
 /**
  * このクラスは、簡易的なログパースクラスです。
  *
@@ -34,7 +32,7 @@ public class SimpleLogParser extends AbstractLogParser {
 
     private File file;
 
-    public SimpleLogParser(final File file, final ParserConfig config) {
+    public SimpleLogParser(final File file, final LogParserConfig config) {
         super(config);
         this.file = file;
     }

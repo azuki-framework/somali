@@ -1,23 +1,23 @@
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser - >>> WebService.execute
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -   argument[0] = "request"
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser - >>> CheckController.check
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -   argument[0] = "ID"
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser - <<< CheckController.check
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -   return true
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser - >>> ProfileController.regist
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -   argument[0] = "ID"
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -   argument[1] = "Name"
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser - <<< ProfileController.regist
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -   return "response"
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser - >>> MailController.send
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -   argument[0] = "ID"
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -   argument[1] = "Name"
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser - >>> MailService.send
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -   argument[0] = "ID"
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -   argument[1] = "Name"
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser - <<< MailService.send
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -   throw BusinessException
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser - <<< MailController.send
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -   throw BusinessException
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser - <<< WebService.execute
-00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -   return "response"
+00:00:00.000 [INFO ] org.azkwf.somali.parser.LogParser - >>> WebService.execute
+00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -  argument[0] = "request"
+00:00:00.000 [INFO ] org.azkwf.somali.parser.LogParser - >>> CheckController.check
+00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -  argument[0] = "ID"
+00:00:00.000 [INFO ] org.azkwf.somali.parser.LogParser - <<< CheckController.check
+00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -  return = true
+00:00:00.000 [INFO ] org.azkwf.somali.parser.LogParser - >>> ProfileController.regist
+00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -  argument[0] = "ID"
+00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -  argument[1] = "Name"
+00:00:00.000 [INFO ] org.azkwf.somali.parser.LogParser - <<< ProfileController.regist
+00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -  return = "response"
+00:00:00.000 [INFO ] org.azkwf.somali.parser.LogParser - >>> MailController.send
+00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -  argument[0] = "ID"
+00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -  argument[1] = "Name"
+00:00:00.000 [INFO ] org.azkwf.somali.parser.LogParser - >>> MailService.send
+00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -  argument[0] = "ID"
+00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -  argument[1] = "Name"
+00:00:00.000 [INFO ] org.azkwf.somali.parser.LogParser - <<< MailService.send
+00:00:00.000 [ERROR] org.azkwf.somali.parser.LogParser -  throw BusinessException
+00:00:00.000 [INFO ] org.azkwf.somali.parser.LogParser - <<< MailController.send
+00:00:00.000 [ERROR] org.azkwf.somali.parser.LogParser -  throw BusinessException
+00:00:00.000 [INFO ] org.azkwf.somali.parser.LogParser - <<< WebService.execute
+00:00:00.000 [DEBUG] org.azkwf.somali.parser.LogParser -  return = "response"

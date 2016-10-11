@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.azkwf.somali.config;
+package org.azkwf.somali.parser;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  *
  * @author Kawakicchi
  */
-public class ParserConfig {
+public class LogParserConfig {
 
     private static final String KEY_LOG_PATTERN = "log.pattern";
 
@@ -57,7 +57,7 @@ public class ParserConfig {
 
     private String formatDate;
 
-    public ParserConfig() {
+    public LogParserConfig() {
         String date = "([0-9]{4}\\/[0-9]{2}\\/[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}){1}";
         String level = "([^\\s]+)[\\s]+";
         String param = "\\{(.+)\\}";
@@ -74,8 +74,8 @@ public class ParserConfig {
         formatDate = "yyy/MM/dd HH:mm:ss.SSS";
     }
 
-    public static ParserConfig load(final File file) throws IOException {
-        ParserConfig config = new ParserConfig();
+    public static LogParserConfig load(final File file) throws IOException {
+        LogParserConfig config = new LogParserConfig();
         Properties p = new Properties();
         InputStream stream = null;
         try {
@@ -102,7 +102,7 @@ public class ParserConfig {
     }
 
     public static void store(final File file,
-        final ParserConfig config) throws IOException {
+        final LogParserConfig config) throws IOException {
         OutputStream stream = null;
         try {
             stream = new FileOutputStream(file);
