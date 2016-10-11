@@ -24,97 +24,154 @@ import org.azkwf.somali.util.SomaliUtil;
 
 /**
  * このクラスは、メソッド呼び出し情報を保持したクラスです。
- * 
+ *
  * @author Kawakicchi
  */
 public class MethodCall {
 
-	private String name;
-	private final List<String> arguments;
-	private final List<MethodCall> methodCalls;
-	private String result;
-	private String exception;
-	private Long time;
+    private String name;
 
-	public MethodCall() {
-		arguments = new ArrayList<String>();
-		methodCalls = new ArrayList<MethodCall>();
-	}
+    private final List<String> arguments;
 
-	public MethodCall(final String name) {
-		this.name = name;
-		arguments = new ArrayList<String>();
-		methodCalls = new ArrayList<MethodCall>();
-	}
+    private final List<MethodCall> methodCalls;
 
-	public void setName(final String name) {
-		this.name = name;
-	}
+    private String result;
 
-	public String getName() {
-		return name;
-	}
+    private String exception;
 
-	public void addArgument(final String argument) {
-		arguments.add(argument);
-	}
+    private Long time;
 
-	public List<String> getArguments() {
-		return arguments;
-	}
+    private int indexStart;
 
-	public void addMethodCall(final MethodCall methodCall) {
-		methodCalls.add(methodCall);
-	}
+    private int indexEnd;
 
-	public List<MethodCall> getMethodCalls() {
-		return methodCalls;
-	}
+    public MethodCall() {
+        arguments = new ArrayList<String>();
+        methodCalls = new ArrayList<MethodCall>();
+    }
 
-	/**
-	 * @return the result
-	 */
-	public String getResult() {
-		return result;
-	}
+    public MethodCall(final String name) {
+        this.name = name;
+        arguments = new ArrayList<String>();
+        methodCalls = new ArrayList<MethodCall>();
+    }
 
-	/**
-	 * @param result the result to set
-	 */
-	public void setResult(String result) {
-		this.result = result;
-	}
+    /**
+     * nameを設定します。
+     * 
+     * @param name name
+     */
+    public void setName(final String name) {
+        this.name = name;
+    }
 
-	/**
-	 * @return the exception
-	 */
-	public String getException() {
-		return exception;
-	}
+    /**
+     * nameを取得します。
+     * 
+     * @return name
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * @param exception the exception to set
-	 */
-	public void setException(String exception) {
-		this.exception = exception;
-	}
+    public void addArgument(final String argument) {
+        arguments.add(argument);
+    }
 
-	/**
-	 * @return the time
-	 */
-	public Long getTime() {
-		return time;
-	}
+    /**
+     * argumentsを取得します。
+     * 
+     * @return arguments
+     */
+    public List<String> getArguments() {
+        return arguments;
+    }
 
-	/**
-	 * @param time the time to set
-	 */
-	public void setTime(Long time) {
-		this.time = time;
-	}
+    public void addMethodCall(final MethodCall methodCall) {
+        methodCalls.add(methodCall);
+    }
 
-	public String toString() {
-		return String.format("%s (%s)", name, SomaliUtil.msToString(time));
-	}
+    /**
+     * methodCallsを取得します。
+     * 
+     * @return methodCalls
+     */
+    public List<MethodCall> getMethodCalls() {
+        return methodCalls;
+    }
+
+    /**
+     * resultを取得します。
+     * 
+     * @return result
+     */
+    public String getResult() {
+        return result;
+    }
+
+    /**
+     * resultを設定します。
+     * 
+     * @param result result
+     */
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    /**
+     * exceptionを取得します。
+     * 
+     * @return exception
+     */
+    public String getException() {
+        return exception;
+    }
+
+    /**
+     * exceptionを設定します。
+     * 
+     * @param exception exception
+     */
+    public void setException(String exception) {
+        this.exception = exception;
+    }
+
+    /**
+     * timeを取得します。
+     * 
+     * @return time
+     */
+    public Long getTime() {
+        return time;
+    }
+
+    /**
+     * timeを設定します。
+     * 
+     * @param time time
+     */
+    public void setTime(Long time) {
+        this.time = time;
+    }
+
+    public int getIndexStart() {
+        return indexStart;
+    }
+
+    public void setIndexStart(int indexStart) {
+        this.indexStart = indexStart;
+    }
+
+    public int getIndexEnd() {
+        return indexEnd;
+    }
+
+    public void setIndexEnd(int indexEnd) {
+        this.indexEnd = indexEnd;
+    }
+
+    public String toString() {
+        return String.format("%s (%s)", name, SomaliUtil.msToString(time));
+    }
 
 }

@@ -19,21 +19,24 @@ package org.azkwf.somali.util;
 
 /**
  * @author Kawakicchi
- *
  */
 public class SomaliUtil {
 
-	public static String msToString(final Long time) {
-		String s = null;
-		if (null != time) {
-			if (time < 1000) {
-				s = String.format("%d ms", time);
-			} else if (time < 60 * 1000) {
-				s = String.format("%d sec", time / 1000);
-			} else {
-				s = String.format("%d min", time / (1000 * 60));
-			}
-		}
-		return s;
-	}
+    public static String msToString(final Long time) {
+        String s = null;
+        if (null != time) {
+            if (time < 1000) {
+                s = String.format("%d ms", time);
+            } else if (time < 60 * 1000) {
+                s = String.format("%d sec", time / 1000);
+            } else {
+                s = String.format("%d min", time / (1000 * 60));
+            }
+        }
+        return s;
+    }
+
+    public static boolean isNotEmpty(final String string) {
+        return (null != string && 0 < string.length());
+    }
 }

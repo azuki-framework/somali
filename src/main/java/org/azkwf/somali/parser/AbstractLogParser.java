@@ -33,168 +33,173 @@ import org.slf4j.LoggerFactory;
 
 /**
  * このクラスは、ログ解析機能を実装するための基底クラスです。
- * 
+ *
  * @author Kawakicchi
  */
 public abstract class AbstractLogParser implements LogParser {
 
-	private Logger logger;
+    private Logger logger;
 
-	private final LogParserEvent event;
+    private final LogParserEvent event;
 
-	private final List<LogParserListener> listeners;
+    private final List<LogParserListener> listeners;
 
-	private ParserConfig config;
+    private final ParserConfig config;
 
-	private SimpleDateFormat dateFormat;
+    private SimpleDateFormat dateFormat;
 
-	public AbstractLogParser() {
-		logger = LoggerFactory.getLogger(LogParser.class);
+    public AbstractLogParser(final ParserConfig config) {
+        logger = LoggerFactory.getLogger(LogParser.class);
 
-		config = new ParserConfig();
-		dateFormat = new SimpleDateFormat(config.getFormatDate());
+        this.config = config;
+        dateFormat = new SimpleDateFormat(config.getFormatDate());
 
-		event = new LogParserEvent(this);
-		listeners = new ArrayList<LogParserListener>();
-	}
+        event = new LogParserEvent(this);
+        listeners = new ArrayList<LogParserListener>();
+    }
 
-	@Override
-	public synchronized final void addLogParserListener(final LogParserListener listener) {
-		synchronized (listeners) {
-			listeners.add(listener);
-		}
-	}
+    @Override
+    public synchronized final void addLogParserListener(final LogParserListener listener) {
+        synchronized (listeners) {
+            listeners.add(listener);
+        }
+    }
 
-	protected abstract BufferedReader getReader() throws IOException;
+    protected abstract BufferedReader getReader() throws IOException;
 
-	@Override
-	public void parse() {
-		logger.debug("parse start.");
+    @Override
+    public void parse() {
+        logger.debug("parse start.");
 
-		BufferedReader reader = null;
-		try {
-			synchronized (listeners) {
-				for (LogParserListener l : listeners) {
-					l.logParserStarted(event);
-				}
-			}
+        BufferedReader reader = null;
+        try {
+            synchronized (listeners) {
+                for (LogParserListener l : listeners) {
+                    l.logParserStarted(event);
+                }
+            }
 
-			reader = getReader();
+            reader = getReader();
 
-			StringBuffer builder = null;
-			String line = null;
-			while (null != (line = reader.readLine())) {
-				if (config.getPattern().matcher(line).matches()) {
-					if (null != builder) {
-						log(builder.toString());
-					}
-					builder = new StringBuffer(line);
-				} else {
-					if (null != builder) {
-						builder.append("\n");
-						builder.append(line);
-					}
-				}
-			}
-			if (null != builder) {
-				log(builder.toString());
-			}
+            StringBuffer builder = null;
+            String line = null;
+            while (null != (line = reader.readLine())) {
+                if (config.getPattern().matcher(line).matches()) {
+                    if (null != builder) {
+                        log(builder.toString());
+                    }
+                    builder = new StringBuffer(line);
+                } else {
+                    if (null != builder) {
+                        builder.append("\n");
+                        builder.append(line);
+                    }
+                }
+            }
+            if (null != builder) {
+                log(builder.toString());
+            }
 
-		} catch (IOException ex) {
-			logger.error("Log file io error.", ex);
-		} finally {
-			if (null != reader) {
-				try {
-					reader.close();
-				} catch (IOException ex) {
-					logger.warn("File close error.", ex);
-				}
-			}
+        } catch (IOException ex) {
+            logger.error("Log file io error.", ex);
+        } finally {
+            if (null != reader) {
+                try {
+                    reader.close();
+                } catch (IOException ex) {
+                    logger.warn("File close error.", ex);
+                }
+            }
 
-			synchronized (listeners) {
-				for (LogParserListener l : listeners) {
-					l.logParserFinished(event);
-				}
-			}
-		}
+            synchronized (listeners) {
+                for (LogParserListener l : listeners) {
+                    l.logParserFinished(event);
+                }
+            }
+        }
 
-		logger.debug("parse end.");
-	}
+        logger.debug("parse end.");
+    }
 
-	private void log(final String log) {
-		BasicLogRecord record = new BasicLogRecord(log);
+    private void log(final String log) {
+        BasicLogRecord record = new BasicLogRecord(log);
 
-		Matcher matcher = config.getPattern().matcher(log);
-		if (matcher.find()) {
+        Matcher matcher = config.getPattern().matcher(log);
+        if (matcher.find()) {
 
-			int index = config.getPatternIndexDate();
-			if (0 < index) {
-				try {
-					record.date = dateFormat.parse(matcher.group(index));
-				} catch (ParseException ex) {
-					logger.error("Date parse error.", ex);
-				}
-			}
+            Integer index = null;
+            index = config.getPatternIndexDate();
+            if (null != index && 0 < index) {
+                try {
+                    record.date = dateFormat.parse(matcher.group(index));
+                } catch (ParseException ex) {
+                    logger.error("Date parse error.", ex);
+                }
+            }
 
-			index = config.getPatternIndexLevel();
-			if (0 < index) {
-				record.level = matcher.group(index);
-			}
+            index = config.getPatternIndexLevel();
+            if (null != index && 0 < index) {
+                record.level = matcher.group(index);
+            }
 
-			index = config.getPatternIndexLogger();
-			if (0 < index) {
-				record.logger = matcher.group(index);
-			}
+            index = config.getPatternIndexLogger();
+            if (null != index && 0 < index) {
+                record.logger = matcher.group(index);
+            }
 
-			index = config.getPatternIndexMessage();
-			if (0 < index) {
-				record.message = matcher.group(index);
-			}
+            index = config.getPatternIndexMessage();
+            if (null != index && 0 < index) {
+                record.message = matcher.group(index);
+            }
 
-			synchronized (listeners) {
-				for (LogParserListener l : listeners) {
-					l.logParserLogRecord(record, event);
-				}
-			}
-		} else {
-			logger.error("Format error log.{}", log);
-		}
-	}
+            synchronized (listeners) {
+                for (LogParserListener l : listeners) {
+                    l.logParserLogRecord(record, event);
+                }
+            }
+        } else {
+            logger.error("Format error log.{}", log);
+        }
+    }
 
-	private class BasicLogRecord implements LogRecord {
+    private class BasicLogRecord implements LogRecord {
 
-		private Date date;
-		private String level;
-		private String logger;
-		private String message;
-		private String log;
+        private Date date;
 
-		public BasicLogRecord(final String log) {
-			this.log = log;
-		}
+        private String level;
 
-		@Override
-		public Date getDate() {
-			return date;
-		}
+        private String logger;
 
-		@Override
-		public String getLevel() {
-			return level;
-		}
+        private String message;
 
-		@Override
-		public String getLogger() {
-			return logger;
-		}
+        private String log;
 
-		@Override
-		public String getMessage() {
-			return message;
-		}
+        public BasicLogRecord(final String log) {
+            this.log = log;
+        }
 
-		public String toString() {
-			return log;
-		}
-	}
+        @Override
+        public Date getDate() {
+            return date;
+        }
+
+        @Override
+        public String getLevel() {
+            return level;
+        }
+
+        @Override
+        public String getLogger() {
+            return logger;
+        }
+
+        @Override
+        public String getMessage() {
+            return message;
+        }
+
+        public String toString() {
+            return log;
+        }
+    }
 }
