@@ -39,7 +39,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JProgressBar;
 import javax.swing.JSplitPane;
 
-
 import org.azkwf.somali.parser.LogParser;
 import org.azkwf.somali.parser.LogParserConfig;
 import org.azkwf.somali.parser.LogParserEvent;
