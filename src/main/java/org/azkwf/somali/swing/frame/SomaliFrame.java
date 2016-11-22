@@ -49,6 +49,7 @@ import org.azkwf.somali.swing.component.LogListView;
 import org.azkwf.somali.swing.component.LogListViewListener;
 import org.azkwf.somali.swing.component.LogTextView;
 import org.azkwf.somali.swing.component.StatusBar;
+import org.azkwf.somali.swing.dialog.ConfigDialogEvent;
 import org.azkwf.somali.swing.dialog.ConfigDialogListener;
 import org.azkwf.somali.swing.dialog.LogReadConfig;
 import org.azkwf.somali.swing.dialog.LogReadDialog;
@@ -167,9 +168,10 @@ public class SomaliFrame extends JFrame {
 
         LogReadDialog dlg = new LogReadDialog(this, condition);
         dlg.addConfigDialogListener(new ConfigDialogListener<LogReadConfig>() {
-            @Override
-            public void configDialogOk(final LogReadConfig config) {
 
+            @Override
+            public void configDialogOk(LogReadConfig config,
+                ConfigDialogEvent<LogReadConfig> e) {
                 try {
                     LogReadConfig.store(new File("condition.properties"), config);
                 } catch (IOException ex) {

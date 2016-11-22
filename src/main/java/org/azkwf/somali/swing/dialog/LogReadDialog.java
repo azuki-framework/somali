@@ -120,7 +120,8 @@ public class LogReadDialog extends ConfigDialog<LogReadConfig> {
     }
 
     @Override
-    protected void doInit(final JPanel client) {
+    protected void doInit(final JPanel client,
+        final LogReadConfig config) {
         client.setLayout(null);
         // LogFile
         lblLogFile = new JLabel("LogFile");

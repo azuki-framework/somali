@@ -36,132 +36,144 @@ import javax.swing.JPanel;
 
 /**
  * このクラスは、コンフィグダイアログを実装する基底クラスです。
- * 
+ *
  * @author Kawakicchi
  */
 public abstract class ConfigDialog<CONFIG> extends JDialog {
 
-	/** serialVersionUID */
-	private static final long serialVersionUID = -2449312977427490099L;
+    /** serialVersionUID */
+    private static final long serialVersionUID = -2449312977427490099L;
 
-	private List<ConfigDialogListener<CONFIG>> listeners;
+    private ConfigDialogEvent<CONFIG> event;
 
-	private JPanel pnlClient;
-	private JPanel pnlControl;
-	private JButton btnOk;
-	private JButton btnCancel;
+    private List<ConfigDialogListener<CONFIG>> listeners;
 
-	public ConfigDialog(final JFrame parent) {
-		super(parent, true);
+    private JPanel pnlClient;
 
-		listeners = new ArrayList<ConfigDialogListener<CONFIG>>();
+    private JPanel pnlControl;
 
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setLayout(new BorderLayout());
+    private JButton btnOk;
 
-		pnlClient = new JPanel();
-		pnlControl = new JPanel();
+    private JButton btnCancel;
 
-		add(BorderLayout.CENTER, pnlClient);
-		add(BorderLayout.SOUTH, pnlControl);
+    public ConfigDialog(final JFrame parent) {
+        this(parent, null);
+    }
 
-		// Controll
-		btnOk = new JButton("OK");
-		btnCancel = new JButton("キャンセル");
+    public ConfigDialog(final JFrame parent, final CONFIG config) {
+        super(parent, true);
 
-		btnOk.setSize(120, 24);
-		btnCancel.setSize(120, 24);
+        event = new ConfigDialogEvent<CONFIG>(this);
+        listeners = new ArrayList<ConfigDialogListener<CONFIG>>();
 
-		// Controll
-		pnlControl.setPreferredSize(new Dimension(0, 30));
-		pnlControl.setLayout(null);
-		pnlControl.add(btnOk);
-		pnlControl.add(btnCancel);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
 
-		pnlControl.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-				Insets insets = pnlControl.getInsets();
-				int width = pnlControl.getWidth() - (insets.left + insets.right);
-				int height = pnlControl.getHeight() - (insets.top + insets.bottom);
-				btnOk.setLocation(width - (btnOk.getWidth()), 2);
-				btnCancel.setLocation(width - (btnCancel.getWidth() + btnOk.getWidth()), 2);
-			}
-		});
+        pnlClient = new JPanel();
+        pnlControl = new JPanel();
 
-		btnOk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doOk();
-			}
-		});
-		btnCancel.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doCancel();
-			}
-		});
+        add(BorderLayout.CENTER, pnlClient);
+        add(BorderLayout.SOUTH, pnlControl);
 
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				close();
-			}
+        // Controll
+        btnOk = new JButton("OK");
+        btnCancel = new JButton("キャンセル");
 
-			@Override
-			public void windowClosed(WindowEvent e) {
-			}
-		});
+        btnOk.setSize(120, 24);
+        btnCancel.setSize(120, 24);
 
-		pnlClient.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-				Insets insets = pnlClient.getInsets();
-				int width = pnlClient.getWidth() - (insets.left + insets.right);
-				int height = pnlClient.getHeight() - (insets.top + insets.bottom);
-				doResize(pnlClient);
-			}
-		});
+        // Controll
+        pnlControl.setPreferredSize(new Dimension(0, 30));
+        pnlControl.setLayout(null);
+        pnlControl.add(btnOk);
+        pnlControl.add(btnCancel);
 
-		doInit(pnlClient);
-	}
+        pnlControl.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                Insets insets = pnlControl.getInsets();
+                int width = pnlControl.getWidth() - (insets.left + insets.right);
+                int height = pnlControl.getHeight() - (insets.top + insets.bottom);
+                btnOk.setLocation(width - (btnOk.getWidth()), 2);
+                btnCancel.setLocation(width - (btnCancel.getWidth() + btnOk.getWidth()), 2);
+            }
+        });
 
-	protected abstract boolean doValidate();
+        btnOk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                doOk();
+            }
+        });
 
-	protected abstract CONFIG getConfig();
+        btnCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                doCancel();
+            }
+        });
 
-	protected abstract void doInit(final JPanel client);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                close();
+            }
 
-	protected abstract void doResize(final JPanel client);
+            @Override
+            public void windowClosed(WindowEvent e) {
+            }
+        });
 
-	public final synchronized void addConfigDialogListener(final ConfigDialogListener<CONFIG> listener) {
-		listeners.add(listener);
-	}
+        pnlClient.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                Insets insets = pnlClient.getInsets();
+                int width = pnlClient.getWidth() - (insets.left + insets.right);
+                int height = pnlClient.getHeight() - (insets.top + insets.bottom);
+                doResize(pnlClient);
+            }
+        });
 
-	protected final JPanel getClient() {
-		return pnlClient;
-	}
+        doInit(pnlClient, config);
+    }
 
-	private void close() {
-		dispose();
-	}
+    public final synchronized void addConfigDialogListener(final ConfigDialogListener<CONFIG> listener) {
+        listeners.add(listener);
+    }
 
-	private void doOk() {
-		if (doValidate()) {
+    protected abstract boolean doValidate();
 
-			CONFIG config = getConfig();
+    protected abstract CONFIG getConfig();
 
-			synchronized (listeners) {
-				for (ConfigDialogListener<CONFIG> l : listeners) {
-					l.configDialogOk(config);
-				}
-			}
+    protected abstract void doInit(final JPanel client,
+        final CONFIG config);
 
-			close();
-		}
-	}
+    protected abstract void doResize(final JPanel client);
 
-	private void doCancel() {
-		close();
-	}
+    protected final JPanel getClient() {
+        return pnlClient;
+    }
+
+    private void close() {
+        dispose();
+    }
+
+    private void doOk() {
+        if (doValidate()) {
+
+            final CONFIG config = getConfig();
+
+            synchronized (listeners) {
+                for (ConfigDialogListener<CONFIG> l : listeners) {
+                    l.configDialogOk(config, event);
+                }
+            }
+
+            close();
+        }
+    }
+
+    private void doCancel() {
+        close();
+    }
 }

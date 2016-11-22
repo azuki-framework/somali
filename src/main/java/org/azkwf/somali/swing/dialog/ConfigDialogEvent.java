@@ -18,18 +18,19 @@
 package org.azkwf.somali.swing.dialog;
 
 /**
- * このインターフェースは、コンフィグダイアログのイベントを定義したリスナーインターフェースです。
+ * このクラスは、コンフィグダイアログイベント情報を保持するクラスです。
  *
  * @author Kawakicchi
  */
-public interface ConfigDialogListener<CONFIG> {
+public class ConfigDialogEvent<CONFIG> {
 
-    /**
-     * OKボタン押下時に呼び出される。
-     *
-     * @param config 設定情報
-     * @param e イベント情報
-     */
-    public void configDialogOk(CONFIG config,
-        ConfigDialogEvent<CONFIG> e);
+    private ConfigDialog<CONFIG> source;
+
+    public ConfigDialogEvent(final ConfigDialog<CONFIG> source) {
+        this.source = source;
+    }
+
+    public ConfigDialog<CONFIG> getSource() {
+        return source;
+    }
 }
