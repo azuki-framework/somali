@@ -39,8 +39,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JProgressBar;
 import javax.swing.JSplitPane;
 
-import org.azkwf.somali.config.ParserConfig;
+
 import org.azkwf.somali.parser.LogParser;
+import org.azkwf.somali.parser.LogParserConfig;
 import org.azkwf.somali.parser.LogParserEvent;
 import org.azkwf.somali.parser.LogParserListener;
 import org.azkwf.somali.parser.SimpleLogParser;
@@ -200,9 +201,9 @@ public class SomaliFrame extends JFrame {
     }
 
     private void parse(final LogReadConfig config) {
-        ParserConfig configParser = null;
+        LogParserConfig configParser = null;
         try {
-            configParser = ParserConfig.load(new File("somali.properties"));
+            configParser = LogParserConfig.load(new File("somali.properties"));
         } catch (IOException ex) {
             ex.printStackTrace();
             return;

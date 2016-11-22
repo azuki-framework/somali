@@ -26,13 +26,13 @@ import org.azkwf.somali.swing.frame.SomaliFrame;
  */
 public class Application {
 
-    /**
-     * メインメソッド
-     *
-     * @param args 引数
-     */
-    public static void main(final String[] args) {
-        SomaliFrame frm = new SomaliFrame();
-        frm.setVisible(true);
-    }
+	/**
+	 * メインメソッド
+	 *
+	 * @param args 引数
+	 */
+	public static void main(final String[] args) {
+		SomaliFrame frm = new SomaliFrame();
+		frm.setVisible(true);
+	}
 }

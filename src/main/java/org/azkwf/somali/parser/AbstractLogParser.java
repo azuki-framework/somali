@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import org.azkwf.somali.config.ParserConfig;
 import org.azkwf.somali.record.LogRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,11 +43,11 @@ public abstract class AbstractLogParser implements LogParser {
 
     private final List<LogParserListener> listeners;
 
-    private final ParserConfig config;
+    private final LogParserConfig config;
 
     private SimpleDateFormat dateFormat;
 
-    public AbstractLogParser(final ParserConfig config) {
+    public AbstractLogParser(final LogParserConfig config) {
         logger = LoggerFactory.getLogger(LogParser.class);
 
         this.config = config;
